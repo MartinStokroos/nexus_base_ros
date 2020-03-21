@@ -35,7 +35,7 @@ Generate the *ros_lib* with the header files of the custom message types used in
 1. cd into `Arduino/libraries`
 2. type: `rosrun rosserial_arduino make_libraries.py .`
 
-In the newly made `ros_lib` , edit `ros.h`. Reduce the number of buffers and down size the buffers to save memory space:
+In the newly made `ros_lib` , edit `ros.h` and reduce the number of buffers and down size the buffer sizes to save memory space:
 
 ```
 #elif defined(__AVR_ATmega328P__)
@@ -97,6 +97,40 @@ Launch:
 The left joystick handle steers the angular velocity when moved from left to right. The right joystick controls the x- and y-speed.
 The red button enables the emergency stop. The green button is to rearm the robot after an emergency stop.
 
+Some diagnostics:
+
+```
+$ rostopic list
+/cmd_motor
+/cmd_vel
+/diagnostics
+/joy
+/joy/set_feedback
+/rosout
+/rosout_agg
+/sensor_odom
+/wheel_vel
+
+$ rosservice list
+/arming_enable
+/base_controller/get_loggers
+/base_controller/set_logger_level
+/emergency_stop_enable
+/joystick/get_loggers
+/joystick/set_logger_level
+/nexus_base/get_loggers
+/nexus_base/set_logger_level
+/rosout/get_loggers
+/rosout/set_logger_level
+/teleop_joy/get_loggers
+/teleop_joy/set_logger_level
+
+$ rostopic hz /wheel_vel 
+subscribed to [/wheel_vel]
+average rate: 20.010
+	min: 0.047s max: 0.064s std dev: 0.00505s window: 40
+```
+
 ## Known issues
 When building the package for the first time, the following error may appear:
 
@@ -107,19 +141,19 @@ fatal error: nexus_base_ros/Encoders.h: No such file or directory
 compilation terminated.
 ```
 
-The reason for this could be, that there is something wrong in the sequence of instructions in the `CMakeList.txt` file or that the dependencies are not finished before linking because the make proces is threaded. The workaround is:
+The reason for this could be that there is something wrong in the sequence of instructions in the `CMakeList.txt` file. It could also be that the build of some dependencies are not finished before linking because the make proces is threaded. For the moment the workaround is:
 
 ```
 cd build/
 make -j4 nexus_base_ros
-cd
+cd ..
 catkin_make
 ```
 
 #
 
-Rosservice calls do not work with rosserial. ROS Melodic comes with rosserial version 0.8.0. rosserial 0.7.7 works. Workaround:
-Download [rosserial](https://repology.org/project/rosserial/packages) 0.7.7 . Unzip and copy the following modules from the rosserial-0.7.7 package into the catkin src directory and rebuild the project:
+ROS service calls do not work with rosserial 0.8.0. ROS Melodic comes with rosserial version 0.8.0. but rosserial 0.7.7 works. Workaround:
+Download [rosserial](https://repology.org/project/rosserial/packages) 0.7.7 . Unzip and copy the following modules from the rosserial-0.7.7 package into the catkin *src* directory and rebuild the project:
 
 ```
 rosserial
@@ -131,5 +165,5 @@ rosserial_server
 
 #
 
-Bug: sometimes the wheels do not repond for a while when rearming from an emergency stop.
+Sometimes the wheels do not respond for a moment when rearming after an emergency stop.
  
