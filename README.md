@@ -35,7 +35,7 @@ Generate the *ros_lib* with the header files of the custom message types used in
 1. cd into `Arduino/libraries`
 2. type: `rosrun rosserial_arduino make_libraries.py .`
 
-In the newly made `ros_lib` , edit `ros.h` and reduce the number of buffers and down size the buffer sizes to save memory space:
+In the newly made `ros_lib` , edit `ros.h` and reduce the number of buffers and downsize the buffer sizes to save some memory space:
 
 ```
 #elif defined(__AVR_ATmega328P__)
@@ -46,7 +46,7 @@ In the newly made `ros_lib` , edit `ros.h` and reduce the number of buffers and 
 
 ## Flashing the firmware into the wheel controller board of the 10011 platform
 * download and include the digitalWriteFast Arduino library from: [digitalwritefast](https://code.google.com/archive/p/digitalwritefast/downloads)
-* clone and install the PinChangeInt library: `https://github.com/GreyGnome/PinChangeInt.git`
+* clone and install the PinChangeInt library: `https://github.com/MartinStokroos/PinChangeInt`
 
 Program the *Nexus_Omni4WD_Rosserial.ino* sketch from the firmware folder into the Arduino  Duemilanove-328 based controller board from the 10011 platform.
 
