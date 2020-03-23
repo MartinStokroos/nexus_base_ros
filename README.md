@@ -53,7 +53,7 @@ Program the *Nexus_Omni4WD_Rosserial.ino* sketch from the firmware folder into t
 **NOTE:** The Sonars cannot be used simultaneously with the serial interface and must be disconnected permanently!
 
 ## Description
-This picture shows the rosgraph output from `rqt_graph`:
+The picture below shows the rosgraph output from `rqt_graph`:
 
 ![rosgraph](rosgraph.png  "rosgraph")
 
@@ -73,7 +73,7 @@ Three seconds after receiving a speed (x,y and angular) of '0' the motors are se
 
 * Services
 
-Node *nexus_base* runs two ROS service servers. The first service is called *EmergencyStopEnable* and enables the emergency stop and the second service is called *ArmingEnable* and this service is to (re)arm the system.
+Node *nexus_base* runs two ROS service servers. The first service is called *EmergencyStopEnable* and enables the emergency stop and the second service is called *ArmingEnable* and this service is to rearm the system.
 
 * Block diagram of the Nexus base controller
 
@@ -167,5 +167,5 @@ and rebuild the project.
 
 #
 
-Sometimes the wheels do not respond for a moment when rearming after an emergency stop.
+Sometimes the wheels do not respond for a moment when rearmed after an emergency stop.
  
