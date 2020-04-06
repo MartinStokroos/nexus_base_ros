@@ -115,7 +115,7 @@ catkin_package(
    INCLUDE_DIRS include
    LIBRARIES nexus_base_ros
    CATKIN_DEPENDS roscpp rospy message_generation std_msgs geometry_msgs sensor_msgs
-   DEPENDS
+#  DEPENDS system_lib
 )
 
 ###########

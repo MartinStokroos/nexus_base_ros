@@ -153,15 +153,9 @@ catkin_make
 #
 
 ROS service calls do not work with rosserial 0.8.0. ROS Melodic comes with rosserial version 0.8.0. Rosserial 0.7.7 works. Workaround:
-Download [rosserial 0.7.7](https://repology.org/project/rosserial/packages) . Unzip and copy the following modules from the rosserial-0.7.7 package into the catkin *src* directory:
+Download [rosserial 0.7.7](https://repology.org/project/rosserial/packages) . Unzip and copy the following module from the rosserial-0.7.7 package into the catkin *src* directory:
 
-```
-rosserial
-rosserial_client
-rosserial_msgs
-rosserial_python
-rosserial_server
-``` 
+`rosserial_python` 
 
 and rebuild the project.
 
