@@ -130,6 +130,45 @@ subscribed to [/wheel_vel]
 average rate: 20.010
 	min: 0.047s max: 0.064s std dev: 0.00505s window: 40
 ```
+## Auto-start from boot
+The script to bringup the robot when booting the PC/RPi can be generated with the *robot_upstart* package.
+
+`sudo apt-get install ros-melodic-robot-upstart`
+
+Create the install script(s) (run from catkin workspace):
+
+`rosrun robot_upstart install nexus_base_ros/launch/nexus_teleop_joy.launch`
+
+`sudo systemctl daemon-reload && sudo systemctl start nexus`
+
+One last thing to do, is giving perimission for using the serial port at boot. 
+
+```
+cd /etc/udev/rules.d
+sudo touch local.rules
+```
+
+edit local.rules
+
+```
+ACTION=="add", KERNEL=="dialout", MODE="0666"
+ACTION=="add", KERNEL=="js0", MODE="0666"	//to be confirmed if really needed.
+ACTION=="add", KERNEL=="ttyUSB0", MODE="0666"
+```
+
+The script can be enabled/disabled by:
+
+`sudo systemctl nexus start`
+
+`sudo system ctl nexus stop`
+
+If needed, check the upstart log with:
+
+`sudo journalctl -u nexus`
+
+Uninstalling the script can be done with:
+
+`rosrun robot_upstart uninstall nexus`
 
 ## Known issues
 When building the package for the first time, the following error may appear:
@@ -141,7 +180,7 @@ fatal error: nexus_base_ros/Encoders.h: No such file or directory
 compilation terminated.
 ```
 
-The reason for this could be that there is something wrong in the sequence of instructions in the `CMakeList.txt` file. It could also be that the build of some dependencies are not finished before linking because the make proces is threaded. For the moment the workaround is:
+The reason for this could be that there is something wrong in the sequence of instructions in the *CMakeList.txt* file. It could also be that the build of some dependencies are not finished before linking because the make proces is threaded. For the moment the workaround is:
 
 ```
 cd build/
@@ -153,13 +192,11 @@ catkin_make
 #
 
 ROS service calls do not work with rosserial 0.8.0. ROS Melodic comes with rosserial version 0.8.0. Rosserial 0.7.7 works. Workaround:
-Download [rosserial 0.7.7](https://repology.org/project/rosserial/packages) . Unzip and copy the following module from the rosserial-0.7.7 package into the catkin *src* directory:
+Download [rosserial 0.7.7](https://repology.org/project/rosserial/packages) . Unzip and copy the following module from the rosserial-0.7.7 package into the catkin *src* directory and rebuild the project:
 
 `rosserial_python` 
 
-and rebuild the project.
-
 #
 
-Sometimes the wheels do not respond for a moment when rearmed after an emergency stop.
+Sometimes the wheels do not respond for a moment when the robot is rearmed after an emergency stop.
  
