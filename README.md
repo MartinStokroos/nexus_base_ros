@@ -40,8 +40,8 @@ In the newly made `ros_lib` , edit `ros.h` and reduce the number of buffers and 
 ```
 #elif defined(__AVR_ATmega328P__)
 
-  //typedef NodeHandle_<ArduinoHardware, 25, 25, 280, 280> 
-  typedef NodeHandle_<ArduinoHardware, 8, 8, 128, 128> 
+  //typedef NodeHandle_<ArduinoHardware, 25, 25, 280, 280> NodeHandle;
+  typedef NodeHandle_<ArduinoHardware, 8, 8, 128, 128> NodeHandle;
 ```
 
 ## Flashing the firmware into the wheel controller board of the 10011 platform
@@ -198,5 +198,5 @@ Download [rosserial 0.7.7](https://repology.org/project/rosserial/packages) . Un
 
 #
 
-Sometimes the wheels do not respond for a moment when the robot is rearmed after an emergency stop.
+Sometimes the wheels do not respond for a short moment when the robot is rearmed after an emergency stop.
  
