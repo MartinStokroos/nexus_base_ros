@@ -12,7 +12,7 @@ Logitech F710 | ROS Melodic
 ![Logitech F710](Logitech_F710.jpg  "Logitech F710") | ![ROS Melodic](Melodic.jpg  "ROS Melodic") 
 
 ## Installing ROS dependencies
-This project has been tested with ROS Melodic. The project uses an external C++ library. Clone the required PID_Library in your workspace `/src nexus_base_ros/lib` directory:
+This project has been tested with ROS Melodic. The project uses an external C++ library. Clone the required PID_Library in your workspace `./src/nexus_base_ros/lib` directory:
 
  `git clone https://github.com/MartinStokroos/PID_Controller.git`
  
