@@ -9,10 +9,12 @@ For teleoperation of the Nexus wheelbase a (wireless) game pad like the Logitech
 
 Logitech F710 | ROS Melodic
 ------------- | -----------
-![Logitech F710](Logitech_F710.jpg  "Logitech F710") | ![ROS Melodic](Melodic.jpg  "ROS Melodic") 
+![Logitech F710](Logitech_F710.jpg  "Logitech F710") | ![ROS Melodic](Melodic.jpg  "ROS Melodic")
+
+Clone this package in your *workspace_name/src* directory.
 
 ## Installing ROS dependencies
-This project has been tested with ROS Melodic. The project uses an external C++ library. Clone the required PID_Library in your workspace `./src/nexus_base_ros/lib` directory:
+This project has been tested with ROS Melodic. The project uses an external C++ library. Clone the required PID_Library in `nexus_base_ros/lib` directory:
 
  `git clone https://github.com/MartinStokroos/PID_Controller.git`
  
@@ -25,7 +27,7 @@ sudo apt-get install ros-melodic-joy
 ```
 
 ## Building the package
-Place the package in the workspace *src* directory and run `catkin_make`from the root of the workspace.
+Run `catkin_make`from the root of the workspace.
 
 ## Generating the ros_lib for Arduino
 It is possible to compile the Arduino firmware with the catkin make proces without making use of the Arduino IDE. However, now it is done with the Arduino IDE.
