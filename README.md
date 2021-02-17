@@ -1,15 +1,15 @@
 # ROS wheelbase controller for the NEXUS Omni 4-Wheeled Mecanum Robot
 
-![4WD Mecanum Wheel Mobile Arduino Robotics Car](4WD_Mecanum_Wheel_Robotics_Car.jpg  "4WD Mecanum Wheel Mobile Arduino Robotics Car")
+![4WD Mecanum Wheel Mobile Arduino based Robotics Car](4WD_Mecanum_Wheel_Robotics_Car.jpg  "4WD Mecanum Wheel Mobile Arduino based Robotics Car")
 
 ## Required hardware
 This wheel controller has been developed for the 4WD Mecanum Wheel Mobile Arduino Robotics Car 10011 from [NEXUS ROBOT](https://www.nexusrobot.com/product/4wd-mecanum-wheel-mobile-arduino-robotics-car-10011.html)
 
-For teleoperation of the Nexus wheelbase a (wireless) game pad like the Logitech F710 is recommended. The base controller runs on a PC or a Raspberry Pi 3B with ROS Melodic (-desktop) installed. To install  ROS Melodic on a Rasberry Pi, it is recommended to start with [Ubuntu MATE 18.04](https://ubuntu-mate.org/).
+For teleoperation of the Nexus wheelbase a (wireless) game pad like the Logitech F710 is recommended. The base controller runs on a PC or a Raspberry Pi 3B with ROS Melodic (-desktop) installed. To install  ROS Melodic on a Rasberry Pi, it is recommended to start with [Ubuntu MATE 20.04](https://ubuntu-mate.org/).
 
-Logitech F710 | ROS Melodic
+Logitech F710 | ROS Noetic
 ------------- | -----------
-![Logitech F710](Logitech_F710.jpg  "Logitech F710") | ![ROS Melodic](Melodic.jpg  "ROS Melodic")
+![Logitech F710](Logitech_F710.jpg  "Logitech F710") | ![ROS Noetic](Noetic.png  "ROS Noetic")
 
 Clone this package in your *workspace_name/src* directory.
 
@@ -17,12 +17,11 @@ Clone this package in your *workspace_name/src* directory.
 This project has been tested with ROS Melodic. The project uses an external C++ library. Clone the required PID_Library in `nexus_base_ros/lib` directory:
 
  `git clone https://github.com/MartinStokroos/PID_Controller.git`
- 
+
  The following ROS packages must be installed:
 
 ``` 
 sudo apt-get install ros-melodic-rosserial-arduino
-sudo apt-get install ros-melodic-rosserial
 sudo apt-get install ros-melodic-joy
 ```
 
@@ -48,7 +47,7 @@ In the newly made `ros_lib` , edit `ros.h` and reduce the number of buffers and 
 
 ## Flashing the firmware into the wheel controller board of the 10011 platform
 * download and include the digitalWriteFast Arduino library from: [digitalwritefast](https://code.google.com/archive/p/digitalwritefast/downloads)
-* clone and install the PinChangeInt library: `https://github.com/MartinStokroos/PinChangeInt`
+* clone and install the PinChangeInt library: `git clone https://github.com/MartinStokroos/PinChangeInt`
 
 Program the *Nexus_Omni4WD_Rosserial.ino* sketch from the firmware folder into the Arduino  Duemilanove-328 based controller board from the 10011 platform.
 
@@ -67,7 +66,7 @@ The *nexus_base_controller* node publishes odometry data based on the wheel enco
 *nexus_base* is a rosserial type node running on the wheelbase controller board. The code for this node can be found in the firmware directory. *nexus_base* listens to the *cmd_motor* topic and publishes the *wheel_vel* topic at a constant rate of 20Hz (default).
 The data structure of the *cmd_motor* topic is a 4-dim. array of *Int16*'s. The usable range is from -255 to 255 and it represents the duty-cycle of the PWM signals to the motors. Negative values  reverses the direction of rotation.
 The *wheel_vel* topic data format is also a 4-dim. array of *Int16*'s.
- 
+
 *wheel_vel* is the raw wheel speed and that is the number of encoder increments/decrements per sample interval (0.05s default).
 Three seconds after receiving a speed (x,y and angular) of '0' the motors are set idle to save power by stopping the PWM.
 
@@ -143,7 +142,7 @@ Create the install script(s) (run from catkin workspace):
 
 `sudo systemctl daemon-reload && sudo systemctl start nexus`
 
-One last thing to do, is giving perimission for using the serial port at boot. 
+One last thing to do, is giving permission for using the serial port at boot. 
 
 ```
 cd /etc/udev/rules.d
@@ -182,7 +181,7 @@ fatal error: nexus_base_ros/Encoders.h: No such file or directory
 compilation terminated.
 ```
 
-The reason for this could be that there is something wrong in the sequence of instructions in the *CMakeList.txt* file. It could also be that the build of some dependencies are not finished before linking because the make proces is threaded. For the moment the workaround is:
+The reason for this could be that there is something wrong in the sequence of instructions in the *CMakeList.txt* file. It could also be that the build of some dependencies are not finished before linking because the make process is threaded. For the moment the workaround is:
 
 ```
 cd build/
@@ -201,4 +200,4 @@ Download [rosserial 0.7.7](https://repology.org/project/rosserial/packages) . Un
 #
 
 Sometimes the wheels do not respond for a short moment when the robot is rearmed after an emergency stop.
- 
+
