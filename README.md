@@ -1,20 +1,22 @@
 # ROS wheelbase controller for the NEXUS Omni 4-Wheeled Mecanum Robot
 
+This branch is currently under development for ROS Noetic. The project is now in the testing phase.
+
 ![4WD Mecanum Wheel Mobile Arduino based Robotics Car](4WD_Mecanum_Wheel_Robotics_Car.jpg  "4WD Mecanum Wheel Mobile Arduino based Robotics Car")
 
 ## Required hardware
-This wheel controller has been developed for the 4WD Mecanum Wheel Mobile Arduino Robotics Car 10011 from [NEXUS ROBOT](https://www.nexusrobot.com/product/4wd-mecanum-wheel-mobile-arduino-robotics-car-10011.html)
+This wheel controller has been developed for the 4WD Mecanum Wheel Mobile Arduino Robotics Car 10011 from [NEXUS ROBOT](https://www.nexusrobot.com/product/4wd-mecanum-wheel-mobile-arduino-robotics-car-10011.html).
 
-For teleoperation of the Nexus wheelbase a (wireless) game pad like the Logitech F710 is recommended. The base controller runs on a PC or a Raspberry Pi 3B with ROS Melodic (-desktop) installed. To install  ROS Melodic on a Rasberry Pi, it is recommended to start with [Ubuntu MATE 20.04](https://ubuntu-mate.org/).
+For teleoperation of the Nexus wheelbase a (wireless) game pad like the Logitech F710 is recommended. The base controller runs on a PC or a Raspberry Pi 3B with ROS [Noetic](http://wiki.ros.org/noetic/Installation/Ubuntu) (ROS-Base) installed. To install  ROS Noetic on a Rasberry Pi, it is recommended to start with [Ubuntu Server 20.04 for ARM](https://ubuntu.com/download/server/arm). Preferably install a lightweight desktop and a remote desktop server like X2GO.
 
 Logitech F710 | ROS Noetic
 ------------- | -----------
 ![Logitech F710](Logitech_F710.jpg  "Logitech F710") | ![ROS Noetic](Noetic.png  "ROS Noetic")
 
-Clone this package in your *workspace_name/src* directory.
+Clone the *nexus-base-ros* package in your *workspace_name/src* directory.
 
 ## Installing ROS dependencies
-This project has been tested with ROS Melodic. The project uses an external C++ library. Clone the required PID_Library in `nexus_base_ros/lib` directory:
+This project has been tested with ROS Noetic. The project uses an external C++ library. Clone the required PID_Library in `nexus_base_ros/lib` directory:
 
  `git clone https://github.com/MartinStokroos/PID_Controller.git`
 
@@ -28,7 +30,7 @@ sudo apt-get install ros-melodic-joy
 ## Building the package
 Run `catkin_make`from the root of the workspace.
 
-## Generating the ros_lib for Arduino
+## Generating the ros_lib for the wheelbase Arduino
 It is possible to compile the Arduino firmware with the catkin make proces without making use of the Arduino IDE. However, now it is done with the Arduino IDE.
 The Arduino IDE should be installed and the `Arduino/libraries` directory must exist in your home folder.
 Generate the *ros_lib* with the header files of the custom message types used in this project.
@@ -44,8 +46,9 @@ In the newly made `ros_lib` , edit `ros.h` and reduce the number of buffers and 
   //typedef NodeHandle_<ArduinoHardware, 25, 25, 280, 280> NodeHandle;
   typedef NodeHandle_<ArduinoHardware, 8, 8, 128, 128> NodeHandle;
 ```
+The Arduino firmware does not necessary have to be compiled on the Pi. The wheelbase firmware can be compiled and flashed onto the Arduino from another ROS PC workstation and then connected to the Pi.
 
-## Flashing the firmware into the wheel controller board of the 10011 platform
+## Flashing the firmware into the wheelbase Arduino board of the 10011 platform
 * download and include the digitalWriteFast Arduino library from: [digitalwritefast](https://code.google.com/archive/p/digitalwritefast/downloads)
 * clone and install the PinChangeInt library: `git clone https://github.com/MartinStokroos/PinChangeInt`
 
