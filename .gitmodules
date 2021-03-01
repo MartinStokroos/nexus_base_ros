@@ -1,0 +1,3 @@
+[submodule "lib/PID_Controller"]
+	path = lib/PID_Controller
+	url = https://github.com/MartinStokroos/PID_Controller.git
