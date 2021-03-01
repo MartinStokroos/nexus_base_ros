@@ -1,6 +1,6 @@
 # ROS wheelbase controller for the NEXUS Omni 4-Wheeled Mecanum Robot
 
-This branch is currently under development for ROS Noetic. The project is now in the testing phase.
+This branch named *noetic* is currently under development for ROS Noetic. The project is now in the testing phase. The build seems to work fine so far.
 
 ![4WD Mecanum Wheel Mobile Arduino based Robotics Car](4WD_Mecanum_Wheel_Robotics_Car.jpg  "4WD Mecanum Wheel Mobile Arduino based Robotics Car")
 
@@ -18,13 +18,38 @@ Clone the *nexus-base-ros* package in your *workspace_name/src* directory.
 ## Installing ROS dependencies
 This project has been tested with ROS Noetic. The project uses an external C++ library. Clone the required PID_Library in `nexus_base_ros/lib` directory:
 
- `git clone https://github.com/MartinStokroos/PID_Controller.git`
+ `git submodule add https://github.com/MartinStokroos/PID_Controller.git`
 
- The following ROS packages must be installed:
+ The complete receipt to install ROS Noetic and the required ROS packages::
 
 ``` 
-sudo apt-get install ros-melodic-rosserial-arduino
-sudo apt-get install ros-melodic-joy
+sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-late>
+
+sudo apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
+
+sudo apt update
+sudo apt install ros-noetic-ros-base
+sudo apt-get install ros-noetic-joy
+sudo apt-get install ros-noetic-rosserial-arduino
+
+// Add path in .bashrc
+echo "source /opt/ros/noetic/setup.bash" >> ~/.bashrc
+source ~/.bashrc
+
+sudo apt install python3-rosdep python3-rosinstall python3-rosinstall-generator python3-wstool build-essential
+
+sudo apt install python3-pip
+sudo pip3 install -U catkin_tools
+
+sudo rosdep init
+rosdep update
+
+//create workspace:
+mkdir ~/catkin_ws/src
+cd ~/catkin_ws /src
+catkin_init_workspace
+cd ~/catkin_ws
+catkin_make
 ```
 
 ## Building the package
@@ -175,26 +200,6 @@ Uninstalling the script can be done with:
 `rosrun robot_upstart uninstall nexus`
 
 ## Known issues
-When building the package for the first time, the following error may appear:
-
-```
-fatal error: nexus_base_ros/Encoders.h: No such file or directory
- #include "nexus_base_ros/Encoders.h"
-          ^~~~~~~~~~~~~~~~~~~~~~~~~~~
-compilation terminated.
-```
-
-The reason for this could be that there is something wrong in the sequence of instructions in the *CMakeList.txt* file. It could also be that the build of some dependencies are not finished before linking because the make process is threaded. For the moment the workaround is:
-
-```
-cd build/
-make -j4 nexus_base_ros
-cd ..
-catkin_make
-```
-
-#
-
 ROS service calls do not work with rosserial 0.8.0. ROS Melodic comes with rosserial version 0.8.0. Rosserial 0.7.7 works. Workaround:
 Download [rosserial 0.7.7](https://repology.org/project/rosserial/packages) . Unzip and copy the following module from the rosserial-0.7.7 package into the catkin *src* directory and rebuild the project:
 
