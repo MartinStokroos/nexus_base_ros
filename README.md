@@ -9,28 +9,21 @@ This wheel controller has been developed for the 4WD Mecanum Wheel Mobile Arduin
 
 For teleoperation of the Nexus wheelbase a (wireless) game pad like the Logitech F710 is recommended. The base controller runs on a PC or a Raspberry Pi 3B with ROS [Noetic](http://wiki.ros.org/noetic/Installation/Ubuntu) (ROS-Base) installed. To install  ROS Noetic on a Rasberry Pi, it is recommended to start with [Ubuntu Server 20.04 for ARM](https://ubuntu.com/download/server/arm). Preferably install a lightweight desktop and a remote desktop server like X2GO.
 
-Logitech F710 | ROS Noetic
+Logitech F710 game pad | ROS Noetic
 ------------- | -----------
 ![Logitech F710](Logitech_F710.jpg  "Logitech F710") | ![ROS Noetic](Noetic.png  "ROS Noetic")
 
-Clone the *nexus-base-ros* package in your *workspace_name/src* directory.
-
-## Installing ROS dependencies
-This project has been tested with ROS Noetic. The project uses an external C++ library. Clone the required PID_Library in `nexus_base_ros/lib` directory:
-
- `git submodule add https://github.com/MartinStokroos/PID_Controller.git`
-
- The complete receipt to install ROS Noetic and the required ROS packages::
+## Installing ROS and ROS dependencies
+This project has been tested with *ROS Noetic*. The complete receipt to install *ROS Noetic* and the required ROS packages:
 
 ``` 
 sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-late>
-
 sudo apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
-
 sudo apt update
 sudo apt install ros-noetic-ros-base
 sudo apt-get install ros-noetic-joy
 sudo apt-get install ros-noetic-rosserial-arduino
+sudo apt-get install ros-noetic-rosserial
 
 // Add path in .bashrc
 echo "source /opt/ros/noetic/setup.bash" >> ~/.bashrc
@@ -44,15 +37,24 @@ sudo pip3 install -U catkin_tools
 sudo rosdep init
 rosdep update
 
-//create workspace:
-mkdir ~/catkin_ws/src
-cd ~/catkin_ws /src
+//create a catkin workspace, for example named "ros_catkin_ws":
+mkdir ~/ros_catkin_ws/src
+cd ~/ros_catkin_ws /src
 catkin_init_workspace
-cd ~/catkin_ws
+cd ~/ros_catkin_ws
 catkin_make
 ```
 
+Clone the *nexus-base-ros* package in the *ros_catkin_ws/src* directory (branch *noetic*).
+
+`git clone https://github.com/MartinStokroos/nexus_base_ros.git`
+
+The project uses an external C++ library. Clone the required PID_Library module in the `nexus_base_ros/lib` directory:
+
+ `git submodule add https://github.com/MartinStokroos/PID_Controller.git`
+
 ## Building the package
+
 Run `catkin_make`from the root of the workspace.
 
 ## Generating the ros_lib for the wheelbase Arduino
@@ -74,14 +76,17 @@ In the newly made `ros_lib` , edit `ros.h` and reduce the number of buffers and 
 The Arduino firmware does not necessary have to be compiled on the Pi. The wheelbase firmware can be compiled and flashed onto the Arduino from another ROS PC workstation and then connected to the Pi.
 
 ## Flashing the firmware into the wheelbase Arduino board of the 10011 platform
-* download and include the digitalWriteFast Arduino library from: [digitalwritefast](https://code.google.com/archive/p/digitalwritefast/downloads)
-* clone and install the PinChangeInt library: `git clone https://github.com/MartinStokroos/PinChangeInt`
+1. download and include the *digitalWriteFast* library from: [digitalwritefast](https://code.google.com/archive/p/digitalwritefast/downloads)
+
+2. clone and install the *PinChangeInt* library:
+
+   `git clone https://github.com/MartinStokroos/PinChangeInt`
 
 Program the *Nexus_Omni4WD_Rosserial.ino* sketch from the firmware folder into the Arduino  Duemilanove-328 based controller board from the 10011 platform.
 
 **NOTE:** The Sonars cannot be used simultaneously with the serial interface and must be disconnected permanently!
 
-## Description
+## Description of the nodes
 The picture below shows the rosgraph output from `rqt_graph`:
 
 ![rosgraph](rosgraph.png  "rosgraph")
@@ -106,12 +111,12 @@ Node *nexus_base* runs two ROS service servers. The first service is called *Eme
 
 * Block diagram of the Nexus base controller
 
-The blockdiagram shows the internal structure of the *nexus_base_controller* node.
+The block diagram shows the internal structure of the *nexus_base_controller* node.
 
 ![Nexus base controller](base_controller_block_diagram.png  "Nexus base controller")
 
 ## Launching the example project
-The tele-operation demo can be launched after connecting a game pad (tested with *Logitech F710*) and the wheel base USB-interface with the platform computer (small formfactor PC or Raspberry Pi 3B). Check if the game pad is present by typing:
+The tele-operation demo can be launched after connecting a game pad (tested with *Logitech F710*) and the wheel base USB-interface with the platform computer (small form factor PC or Raspberry Pi 3B). Check if the game pad is present by typing:
 
 `ls -l /dev/input/js0`
 
@@ -160,7 +165,7 @@ average rate: 20.010
 	min: 0.047s max: 0.064s std dev: 0.00505s window: 40
 ```
 ## Auto-start from boot
-The script to bringup the robot when booting the PC/RPi can be generated with the *robot_upstart* package.
+The script to bring up the robot when booting the PC/RPi can be generated with the *robot_upstart* package.
 
 `sudo apt-get install ros-melodic-robot-upstart`
 
@@ -200,12 +205,10 @@ Uninstalling the script can be done with:
 `rosrun robot_upstart uninstall nexus`
 
 ## Known issues
-ROS service calls do not work with rosserial 0.8.0. ROS Melodic comes with rosserial version 0.8.0. Rosserial 0.7.7 works. Workaround:
+- ROS service calls do not work with rosserial 0.8.0. ROS Melodic comes with rosserial version 0.8.0. Rosserial 0.7.7 works. The workaround is:
 Download [rosserial 0.7.7](https://repology.org/project/rosserial/packages) . Unzip and copy the following module from the rosserial-0.7.7 package into the catkin *src* directory and rebuild the project:
 
 `rosserial_python` 
 
-#
-
-Sometimes the wheels do not respond for a short moment when the robot is rearmed after an emergency stop.
+- Sometimes the wheels do not respond for a short moment when the robot is rearmed after an emergency stop.
 
